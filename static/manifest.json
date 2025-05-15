@@ -1,0 +1,21 @@
+{
+  "name": "Ragie's Birthday Countdown",
+  "short_name": "BirthdayApp",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "description": "Countdown to Ragie's special day!",
+  "theme_color": "#317EFB",
+  "icons": [
+    {
+      "src": "/static/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>🎉 Birthday Countdown</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: white;
+            font-family: "Times New Roman", Times, serif;
+            text-align: center;
+            padding: 40px;
+        }
+        #countdown {
+            font-size: 1.3em;
+            margin-top: 20px;
+        }
+        #message {
+            font-size: 1.5em;
+            margin-top: 30px;
+            color: #ff4081;
+            white-space: pre-wrap; /* preserve line breaks in poem */
+        }
+        #playMusicBtn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #00aaff;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+        }
+        #playMusicBtn:hover {
+            background-color: #0088cc;
+        }
+    </style>
+</head>
+<body>
+    <h1>To Ragie's Birthday</h1>
+    <div id="countdown">Loading...</div>
+    <div id="message"></div>
+    <button id="playMusicBtn">Play Birthday Music</button>
+
+    <audio id="birthday-audio" src="{{ url_for('static', filename='videoplayback.mp3') }}"></audio>
+
+    <script>
+        const birthday = new Date("{{ birthday.isoformat() }}");
+        const messageEl = document.getElementById("message");
+        const countdownEl = document.getElementById("countdown");
+        const playMusicBtn = document.getElementById("playMusicBtn");
+        const audio = document.getElementById("birthday-audio");
+
+        // Birthday poem text (shown only on birthday)
+        const birthdayPoem = `\
+            On this day the stars aligned,<br>
+            To bless the world with you so kind.<br>
+            Your smile lights up the darkest skies,<br>
+            A love so pure, it never lies.<br><br>
+
+            From countdown ticks to birthday cheer,<br>
+            I'm grateful more with every year.<br>
+            This little site may just be code,<br>
+            But it's a piece of love I showed.<br><br>
+
+            So blow your candles, make your wish,<br>
+            You are my heart’s most precious gift. 💖<br>
+            Happy Birthday, my love, forever and always.
+          `;
+
+        playMusicBtn.addEventListener("click", () => {
+            audio.play();
+            playMusicBtn.style.display = "none";
+        });
+
+        function updateCountdown() {
+            const now = new Date();
+            const diff = birthday - now;
+
+            if (diff <= 0 && diff > -86400000) { // birthday day (24 hours)
+                countdownEl.textContent = "00d:00h:00m:00s";
+                messageEl.innerText = "🎂 Happy Birthday, My Love! 🎉\n\n" + birthdayPoem;
+                // Music plays only after user clicks button
+            } else if (diff < -86400000) {
+                messageEl.textContent = "";
+                countdownEl.textContent = "Waiting for next year's birthday...";
+            } else {
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+                const minutes = Math.floor((diff / (1000 * 60)) % 60);
+                const seconds = Math.floor((diff / 1000) % 60);
+
+                countdownEl.textContent =
+                    `${days.toString().padStart(2,'0')}d:` +
+                    `${hours.toString().padStart(2,'0')}h:` +
+                    `${minutes.toString().padStart(2,'0')}m:` +
+                    `${seconds.toString().padStart(2,'0')}s`;
+                messageEl.textContent = "";
+            }
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    </script>
+</body>
+</html>
